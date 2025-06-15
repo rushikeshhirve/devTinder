@@ -20,7 +20,7 @@ It supports only limited data types such as strings, numbers, booleans, arrays, 
 JSON	JavaScript
 Commonly used for data transmission (e.g., API responses) | Used for logic and computation in JavaScript code
 - Why do we get undefined when we console request.body without app.use(express.json()) --> Data comes in chuck and You’ll see that req is a readable stream. This means the data hasn't been read or parsed yet. It’s just a raw stream of bytes.
-So to parse it into json we use middlware app.use(express.json()) to get the request.body
+So to parse it into object we use middlware app.use(express.json()) to get the request.body
 
 
 
