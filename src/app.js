@@ -15,8 +15,8 @@ app.post('/signup',async (req, res) => {
         res.status(201).send("User is added succesfully")
 
     } catch(error) {
-        console.log("Internal Server Error");
-        res.status(500).send("Internal Server Error")
+        console.log("Sign up failed:" + error.message);
+        res.status(500).send("Sign up failed:" + error.message)
     }
 })
 
@@ -27,7 +27,7 @@ app.get('/user', async (req, res) => {
         res.status(200).send(result)
     } catch(error) {
         console.error(error)
-        res.status(500).send("Intetnal Server Error")
+        res.status(500).send("User get failed:" + error.message)
     }
 })
 
@@ -37,7 +37,7 @@ app.get('/feed', async (req, res) => {
         res.status(200).send(result)
     } catch(error) {
         console.error(error)
-        res.status(500).send("Intetnal Server Error")
+        res.status(500).send("Feed API failed:" + error.message)
     }
 })
 
@@ -48,7 +48,7 @@ app.delete('/user', async (req, res) => {
         res.status(200).send("User is deleted")
     } catch(error) {
         console.error(error)
-        res.status(500).send("Intetnal Server Error")
+        res.status(500).send("Delete user failed:" + error.message)
     }
 })
 
@@ -56,11 +56,15 @@ app.patch('/user', async (req, res) => {
     try {
         const userId = req.body.userId;
         const updateData = req.body;
-        const result = await user.findByIdAndUpdate(userId, updateData, { select: ["lastName"]})
+        const result = await user.findByIdAndUpdate(
+            userId, 
+            updateData, 
+            { select: { lastname: 1, skills: 1, gender: 1}, returnDocument: "after", runValidators: "true"}
+        )
         res.status(200).send(result)
     } catch(error) {
-        console.error(error)
-        res.status(500).send("Intetnal Server Error")
+        console.error(error.message)
+        res.status(500).send("Update User failed:" + error.message)
     }
 })
 
@@ -72,7 +76,7 @@ app.patch('/userByEmail', async (req, res) => {
         res.status(200).send(result)
     } catch(error) {
         console.error(error)
-        res.status(500).send("Intetnal Server Error")
+        res.status(500).send("Update failed:" + error.message)
     }
 })
 
