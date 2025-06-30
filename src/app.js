@@ -20,7 +20,6 @@ app.post('/signup',async (req, res) => {
     }
 })
 
-
 app.get('/user', async (req, res) => {
     try {
         const result = await user.findOne({})
@@ -52,10 +51,23 @@ app.delete('/user', async (req, res) => {
     }
 })
 
-app.patch('/user', async (req, res) => {
+app.patch('/user/:userId', async (req, res) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.params?.userId;
         const updateData = req.body;
+
+        const ALLOWED_UPDATED_PARAMS = ["firstName", "lastName", "age", "about", "skills", "password", "photoUrl"]
+
+        const updateAllowed = Object.keys(updateData).every((k) => ALLOWED_UPDATED_PARAMS.includes(k))
+
+        if(!updateAllowed) {
+            throw new Error("Update not allowed")
+        }
+
+        if(updateData.skills.length > 10) {
+            throw new Error("Skills more than 10 not allowd.")
+        }
+
         const result = await user.findByIdAndUpdate(
             userId, 
             updateData, 
