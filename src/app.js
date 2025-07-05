@@ -47,7 +47,7 @@ app.post('/login', async (req, res) => {
             throw new Error('Invalid credentials!')
         }
 
-        let checkPwd = bcrypt.compare(req.body.emailId, userDetails.password)
+        let checkPwd = await bcrypt.compare(req.body.password, userDetails.password)
         if (!checkPwd) {
             throw new Error('Invalid credentials!')
         } 
