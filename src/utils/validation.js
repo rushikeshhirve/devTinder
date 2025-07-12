@@ -15,7 +15,7 @@ let validateSignupData = (data) => {
         throw new Error(`Invalid Parameters`)
     }
 
-    if(data.firstName.length <= 4 || data.firstName.length >= 30) {
+    if(data.firstName.length < 4 || data.firstName.length > 30) {
         throw new Error('firstName should be between 4 and 30')
     } else if(!validator.isEmail(data.emailId)) {
         throw new Error('Invalid Email')

@@ -5,9 +5,13 @@ const { connectDB } = require("./config/database")
 const User = require("./models/user")
 const { validateSignupData, validateLogin } = require("./utils/validation")
 const bcrypt = require('bcrypt');
-
+const cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken');
+const { userAuth } = require("./middlewares/auth")
 
 app.use(express.json())
+app.use(cookieParser())
+
 
 app.post('/signup',async (req, res) => {
     try {
@@ -42,21 +46,47 @@ app.post('/login', async (req, res) => {
         validateLogin(req.body)
 
         // check user exist
-        const userDetails = await User.findOne({emailId: req.body.emailId}, ['password']).lean()
+        const userDetails = await User.findOne({emailId: req.body.emailId}, ['password'])
         if(!userDetails) {
             throw new Error('Invalid credentials!')
         }
 
-        let checkPwd = await bcrypt.compare(req.body.password, userDetails.password)
+        let checkPwd = await userDetails.validatePassword(req.body.password)
         if (!checkPwd) {
             throw new Error('Invalid credentials!')
         } 
+
+        // Create A JWT token 
+        let JwtToken = await userDetails.getJWT();
+
+        // Send the jwt in cookies 
+        res.cookie("token", JwtToken, { expires: new Date(Date.now() + 24 * 3600000)})
 
         res.status(200).send('Login Successful!')
 
     } catch(error) {
         console.error('Error while login: ', error.message)
-        res.status(400).send('Error while login: '+ error.message)
+        res.status(400).send('Error: '+ error.message) 
+    }
+})
+
+app.get("/profile", userAuth, async (req, res) => {
+    try {
+        let user = req.user
+        res.status(200).send(user)
+    } catch(error) {
+        console.error('Error: ', error.message)
+        res.status(400).send('Error: '+ error.message)
+    }
+})
+
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+    try {
+        let user = req.user
+        res.send(user.firstName + " has sent the request succesfully")
+    } catch(error) {
+        console.error('Error: ', error.message)
+        res.status(400).send('Error: '+ error.message)
     }
 })
 
