@@ -30,7 +30,35 @@ let validateLogin = (data) => {
     }
 }
 
+let validateProfileEdit = (data) => {
+    let allowFields = ['firstName', 'lastName', 'age', 'skills', 'about', 'photoUrl', 'gender', 'emailId'];
+
+    let isAllowed = Object.keys(data).every((key) => allowFields.includes(key))
+    if (!isAllowed) {
+        throw new Error("Invalid Data")
+    }
+}
+
+let validateProfilePassword = (data) => {
+    let allowFields = ['newPassword', 'confirmPassword'];
+
+    let isAllowed = Object.keys(data).every((key) => allowFields.includes(key))
+    if (!isAllowed) {
+        throw new Error("Invalid Data")
+    }
+
+    if (data.newPassword !== data.confirmPassword) {
+        throw new Error("Both password should be same")
+    }
+
+    if (!validator.isStrongPassword(data.newPassword)) {
+        throw new Error("Use strong password")
+    }
+}
+
 module.exports = {
     validateSignupData,
-    validateLogin
+    validateLogin,
+    validateProfileEdit,
+    validateProfilePassword
 }
