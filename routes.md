@@ -11,10 +11,8 @@
 - patch /profile/password
 
 # connection request router
-- post /request/send/interested/:userId
-- post /request/send/ignored/:userId
-- post /request/review/accepted/:userId
-- post /request/review/rejected/:userId
+- post /request/send/:status/:userId
+- post /request/review/:status/:requestId
 
 # userRouter 
 - Get /user/connections
