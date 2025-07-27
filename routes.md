@@ -15,8 +15,8 @@
 - post /request/review/:status/:requestId
 
 # userRouter 
-- Get /user/connections
 - Get /user/requests
+- Get /user/connections
 - Get /user/feed
 
 status - interested  ignored  accepted  rejected

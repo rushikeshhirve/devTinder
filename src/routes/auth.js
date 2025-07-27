@@ -11,6 +11,10 @@ authRouter.post('/signup',async (req, res) => {
         validateSignupData(req.body)
         const data = req.body
 
+        // Check Email id already exist or not 
+        const isEmailExist = await User.exists({emailId : data.emailId})
+        if(isEmailExist) return res.status(400).json({message : `${data.emailId} email is already exist.`})
+
         // Password hash
         let hashedPassword = await bcrypt.hash(data.password, 10)
         
