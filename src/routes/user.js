@@ -18,10 +18,14 @@ userRouter.get("/user/requests/received",
             )
             .populate("fromUserId", "firstName lastName about photoUrl skills")
 
-            res.status(200).send({message: "Data fetched successfully",data : getRequest})
+            res.status(200).send({
+                message: "Data fetched successfully",
+                data : getRequest,
+                time: new Date(),
+            })
         } catch(error) {
             console.error('Error: ', error.message)
-            res.status(400).send({message :'Error: '+ error.message})
+            res.status(400).send({message :'Error: '+ error.message, time: new Date()})
         }
     }
 )
@@ -50,10 +54,14 @@ userRouter.get("/user/connections",
                     return connection.toUserId
             })
 
-            res.status(200).send({message: "Data fetched successfully",data : getConnections})
+            res.status(200).send({
+                message: "Data fetched successfully",
+                data : getConnections,
+                time: new Date(),
+            })
         } catch(error) {
             console.error('Error: ', error.message)
-            res.status(400).send({message :'Error: '+ error.message})
+            res.status(400).send({message :'Error: '+ error.message, time: new Date()})
         }
     }
 )
@@ -96,10 +104,14 @@ userRouter.get("/user/feed",
             .skip(skip)
             .limit(limit)
 
-            res.status(200).send({message: "Data fetched successfully",data : feed })
+            res.status(200).send({
+                message: "Data fetched successfully",
+                data : feed,
+                time: new Date(),
+            })
         } catch(error) {
             console.error('Error: ', error.message)
-            res.status(400).send({message :'Error: '+ error.message})
+            res.status(400).send({message :'Error: '+ error.message, time: new Date()})
         }
     }
 )

@@ -8,7 +8,8 @@ const userAuth = async (req, res, next) => {
         const { token } = req.cookies;
         
         if (!token) {
-            throw new Error("Invalid Token!")
+            console.error("[userAuth] No token found in cookies");
+            return res.status(401).send("Access Denied! No token provided.")
         }
 
         // Decode the token
@@ -18,14 +19,18 @@ const userAuth = async (req, res, next) => {
         // Verify the user 
         let user = await User.findById(userId)
         if(!user) {
-            throw new Error("User not found!")
+            console.error("[userAuth] Invalid token: User not found");
+            return res.status(401).send("Access Denied! Invalid token.")
         } 
 
+        // TODO check user status (active/inactive)
+
+        // Attach user to request object
         req.user = user
         next()
     }catch (error) {
         console.error("Error: ", error);
-        res.status(400).send('Error in verifying user: '+ error.message)
+        res.status(400).send('[userAuth] Error in verifying user: '+ error.message)
     }
 }
 

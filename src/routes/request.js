@@ -37,10 +37,13 @@ requestRouter.post("/request/send/:status/:toUserId",
             })
 
             await connectionReq.save()
-            res.send({message : req.user.firstName + " is " + status + " in " + toUser.firstName})
+            res.status(200).send({
+                message : req.user.firstName + " is " + status + " in " + toUser.firstName,
+                time: new Date(),
+            })
         } catch(error) {
             console.error('Error: ', error.message)
-            res.status(400).send({message :'Error: '+ error.message})
+            res.status(400).send({message :'Error: '+ error.message, time: new Date()})
         }
     }
 )
@@ -70,10 +73,14 @@ requestRouter.post('/request/review/:status/:requestId',
             // update the instance
             connectionReq.status = status;
             await connectionReq.save();
-            res.status(200).json({message:`Connection request is ${status}.`, data: connectionReq})
+            res.status(200).sned({
+                message:`Connection request is ${status}.`, 
+                data: connectionReq,
+                time: new Date(),
+            })
         }  catch(error) {
             console.error('Error: ', error.message)
-            res.status(400).send({message :'Error: '+ error.message})
+            res.status(400).send({message :'Error: '+ error.message, time: new Date()})
         }
     }
 )
