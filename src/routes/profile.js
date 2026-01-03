@@ -20,7 +20,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     }
 })
 
-profileRouter.post("/profile/edit", userAuth, async (req, res) => {
+profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
     try {
         validateProfileEdit(req.body);
         let loggedInUser = req.user;        
@@ -28,6 +28,7 @@ profileRouter.post("/profile/edit", userAuth, async (req, res) => {
         await loggedInUser.save()
         res.status(200).send({
             message: "Data is updated succesfully",
+            data: loggedInUser,
             time: new Date(),
         })
     } catch(error) {

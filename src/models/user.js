@@ -11,11 +11,13 @@ const userSchema = new mongoose.Schema(
         required: true,
         trim: true,
         minLength: 3,
-        maxLength: 50
+        maxLength: 20
     },
     lastName: {
         type: String,
-        trim: true
+        trim: true,
+        minLength: 2,
+        maxLength: 20
     },
     emailId: {
         type: String,
@@ -46,7 +48,7 @@ const userSchema = new mongoose.Schema(
         type: String,
         enum: {
             values: ["male", "female", "other"],
-            message: '{VALUE} status is not allowed'
+            message: '{VALUE} gender is not allowed'
         },
     },
     photoUrl: {
@@ -54,14 +56,15 @@ const userSchema = new mongoose.Schema(
         default: "https://img.freepik.com/premium-psd/contact-icon-illustration-isolated_23-2151903357.jpg?semt=ais_items_boosted&w=740",
         validate: (value) => {
             if (!validator.isURL(value)) {
-                throw new  Error("Invalid URL " + value)
+                throw new Error("Invalid URL" + value)
             }
         }
     },
     about: {
         type: String,
         default: "This is the default about of the user",
-        trim: true
+        trim: true,
+        maxLength: 250
     },
     skills: {
         type: [String],
