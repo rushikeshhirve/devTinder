@@ -73,7 +73,7 @@ requestRouter.post('/request/review/:status/:requestId',
             // update the instance
             connectionReq.status = status;
             await connectionReq.save();
-            res.status(200).sned({
+            res.status(200).send({
                 message:`Connection request is ${status}.`, 
                 data: connectionReq,
                 time: new Date(),

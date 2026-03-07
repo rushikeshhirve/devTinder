@@ -26,10 +26,18 @@ authRouter.post('/signup', async (req, res) => {
             password: hashedPassword
         })
 
-        await userDetails.save()
+        let dbresponse = await userDetails.save()
+
+        // Create A JWT token 
+        let JwtToken = await dbresponse.getJWT();
+
+        // Send the jwt in cookies 
+        res.cookie("token", JwtToken, { expires: new Date(Date.now() + 24 * 3600000) })
+
         res.status(201).send({
             message: "User is added succesfully",
             time: new Date(),
+            data: dbresponse
         })
 
     } catch (error) {

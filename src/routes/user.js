@@ -16,7 +16,7 @@ userRouter.get("/user/requests/received",
                     status : 'interested'
                 }
             )
-            .populate("fromUserId", "firstName lastName about photoUrl skills")
+            .populate("fromUserId", "firstName lastName about photoUrl skills gender age")
 
             res.status(200).send({
                 message: "Data fetched successfully",
@@ -44,8 +44,8 @@ userRouter.get("/user/connections",
                     ]
                 }
             )
-            .populate("fromUserId", "firstName lastName about photoUrl skills")
-            .populate("toUserId", "firstName lastName about photoUrl skills")
+            .populate("fromUserId", "firstName lastName about photoUrl skills gender age")
+            .populate("toUserId", "firstName lastName about photoUrl skills gender age")
 
             getConnections = getConnections.map(connection => {
                 if(connection.toUserId._id.toString() === loggedInUser._id.toString()) {
