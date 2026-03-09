@@ -13,7 +13,7 @@ const userAuth = async (req, res, next) => {
         }
 
         // Decode the token
-        let decoded = jwt.verify(token, 'Namaste@Dev')
+        let decoded = jwt.verify(token, process.env.JWT_SECRET)
         let { userId } = decoded
 
         // Verify the user 
